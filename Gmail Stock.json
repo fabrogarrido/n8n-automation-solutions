@@ -1,0 +1,254 @@
+{
+  "name": "M1 - Ejercicio Practico",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "ID_DE_TU_PLANILLA",
+          "mode": "list",
+          "cachedResultName": "Control de inventario",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1phy2mpUZtp1tOeB6K16wGDY84ENt9X6-dfc8ExLQ3c8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Hoja 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1phy2mpUZtp1tOeB6K16wGDY84ENt9X6-dfc8ExLQ3c8/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "8fcd54f7-15f6-48c8-8804-551df9e0edfd",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "cuenta-google-sheets-ejemplo",
+          "name": "Google Sheets Trigger account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "07a40110-a3e7-4600-b373-bbea12dbbb0a",
+              "leftValue": "={{ $json.STOCK }}",
+              "rightValue": 10,
+              "operator": {
+                "type": "number",
+                "operation": "lt"
+              }
+            },
+            {
+              "id": "74e7b03a-0054-4ac1-bf9a-7b3728e2c7dd",
+              "leftValue": "={{ $json.NOTIFICACION }}",
+              "rightValue": "Verdadero",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.3,
+      "position": [
+        240,
+        0
+      ],
+      "id": "0df9a786-1e18-45d4-8b63-2872f1a64dc6",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "sendTo": "email@ejemplo.com",
+        "subject": "=Control de Stock - Producto  {{ $json.PRODUCTO }} Bajo Stock",
+        "emailType": "text",
+        "message": "=El producto ''{{ $json.PRODUCTO }}'' tiene bajo stock. El stock es de {{ $json.STOCK }} unidades. Reponer de inmediato.",
+        "options": {
+          "appendAttribution": true
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        496,
+        0
+      ],
+      "id": "75559e70-f4ee-4c5d-9bdf-31b335b645af",
+      "name": "Send a message",
+      "webhookId": "b7bd8be7-33ce-472a-88e8-fd55fdc803f3",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "cuenta-google-sheets-ejemplo",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "ID_DE_TU_PLANILLA",
+          "mode": "list",
+          "cachedResultName": "Control de inventario",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1phy2mpUZtp1tOeB6K16wGDY84ENt9X6-dfc8ExLQ3c8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Hoja 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1phy2mpUZtp1tOeB6K16wGDY84ENt9X6-dfc8ExLQ3c8/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "PRODUCTO": "={{ $('Filter').item.json.PRODUCTO }}",
+            "STOCK": "={{ $('Filter').item.json.STOCK }}",
+            "NOTIFICACION": "Verdadero",
+            "row_number": 0
+          },
+          "matchingColumns": [
+            "PRODUCTO"
+          ],
+          "schema": [
+            {
+              "id": "PRODUCTO",
+              "displayName": "PRODUCTO",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "STOCK",
+              "displayName": "STOCK",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "NOTIFICACION",
+              "displayName": "NOTIFICACION",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        704,
+        0
+      ],
+      "id": "91c3d869-27d7-42fc-a636-352a91406cf3",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "cuenta-google-sheets-ejemplo",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "adac1cb4-2ac8-408e-a836-53c5356157dc",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "8ceaf63a19263d0080f7a289cd603d1deb1c5c11ad34ec3196683c66d54a242c"
+  },
+  "id": "RnO3Rg4XpVpvQBqf",
+  "tags": []
+}
