@@ -1,0 +1,446 @@
+{
+  "name": "Laboratorio 1",
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "f2c00ee6-245c-41cf-9687-3b818f4be719",
+              "leftValue": "={{ $('Normalizacion').item.json.Pais }}",
+              "rightValue": "ARGENTINA",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "467d05f9-b3d6-4394-b0a3-cab23e85aa8d",
+              "leftValue": "={{ $('Normalizacion').item.json.Mail }}",
+              "rightValue": "@",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        768,
+        0
+      ],
+      "id": "9cfde381-b09d-4949-8549-f2c218c5621a",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1--R627XeA1eqYBG54XHRs3TNdf8aq1nK7pQQnY54UiQ",
+          "mode": "list",
+          "cachedResultName": "Captacion de Leads (respuestas)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1--R627XeA1eqYBG54XHRs3TNdf8aq1nK7pQQnY54UiQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 501869608,
+          "mode": "list",
+          "cachedResultName": "Respuestas de formulario 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1--R627XeA1eqYBG54XHRs3TNdf8aq1nK7pQQnY54UiQ/edit#gid=501869608"
+        },
+        "event": "rowAdded",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "e8a3c68d-e633-43a9-9a59-8cdd1decdf84",
+      "name": "Captador de Leads",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "gCpAxqg0JOQWU0CH",
+          "name": "Google Sheets Trigger account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "da62109d-f4b4-416d-a2be-c16b1638b07f",
+              "name": "Nombre",
+              "value": "={{ $json[\"Nombre y apellido\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "8ab7395e-6bf3-418e-9a13-6e4a4d64bf6d",
+              "name": "Mail",
+              "value": "={{ $json.Email }}",
+              "type": "string"
+            },
+            {
+              "id": "3b0ca7f7-78b6-4446-988e-751d76b70bcb",
+              "name": "Pais",
+              "value": "={{ $json.Pais }}",
+              "type": "string"
+            },
+            {
+              "id": "c2fccd76-ec23-45a0-b8df-3c854639fda3",
+              "name": "Empresa",
+              "value": "={{ $json.Empresa }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "9ae1cce1-7cde-4c6e-937c-1b9fc6ec0ceb",
+      "name": "Datos limpios"
+    },
+    {
+      "parameters": {
+        "jsCode": "for (const item of $input.all()) {\n  // 1. Normalizamos el Nombre (Primera en mayúscula)\n  if (typeof item.json.Nombre === 'string') {\n    item.json.Nombre = item.json.Nombre.trim().charAt(0).toUpperCase() + item.json.Nombre.slice(1).toLowerCase();\n  }\n\n  // 2. Normalizamos el País (Todo a mayúsculas para evitar errores)\n  if (typeof item.json.Pais === 'string') {\n    // Lo pasamos a mayúsculas: \"argentina\" -> \"ARGENTINA\"\n    item.json.Pais = item.json.Pais.trim().toUpperCase();\n  }\n}\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        416,
+        0
+      ],
+      "id": "c2a680d9-6fd7-4079-8c73-c9e16584f54d",
+      "name": "Normalizacion"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1--R627XeA1eqYBG54XHRs3TNdf8aq1nK7pQQnY54UiQ",
+          "mode": "list",
+          "cachedResultName": "Captacion de Leads (respuestas)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1--R627XeA1eqYBG54XHRs3TNdf8aq1nK7pQQnY54UiQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 150052147,
+          "mode": "list",
+          "cachedResultName": "Registro Maestro",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1--R627XeA1eqYBG54XHRs3TNdf8aq1nK7pQQnY54UiQ/edit#gid=150052147"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Nombre y apellido": "={{ $json.Nombre }}",
+            "Email": "={{ $json.Mail }}",
+            "Pais": "={{ $json.Pais }}",
+            "Empresa": "={{ $json.Empresa }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Marca temporal",
+              "displayName": "Marca temporal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Nombre y apellido",
+              "displayName": "Nombre y apellido",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Pais",
+              "displayName": "Pais",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Empresa",
+              "displayName": "Empresa",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        608,
+        0
+      ],
+      "id": "9e2a9049-1642-4b7e-91f0-3612971da590",
+      "name": "Registro Maestro",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "cO2GsHsURz1s3kp7",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "fabr045@gmail.com",
+        "subject": "Nuevo Lead Aprobado",
+        "emailType": "text",
+        "message": "=Hola! Les informamos que tenemos un nuevo lead; a continuación les detallamos sus datos:\n\nNombre:{{ $json[\"Nombre y apellido\"] }}\nMail:{{ $json.Email }}\nEmpresa:{{ $json.Empresa }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        976,
+        -176
+      ],
+      "id": "f291f554-464c-4ec2-8b10-ccdd653c504e",
+      "name": "Mail a equipo de ventas",
+      "webhookId": "622f316f-6301-4b7a-9d92-1f972643e4c6",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "CvAPUCUvxRi0wqRi",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1mhWoaX4jBfAM9ESq4gfMGjrs5By2Qsr8MjkdvvZCLmI",
+          "mode": "list",
+          "cachedResultName": "Leads Descartados",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1mhWoaX4jBfAM9ESq4gfMGjrs5By2Qsr8MjkdvvZCLmI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Hoja 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1mhWoaX4jBfAM9ESq4gfMGjrs5By2Qsr8MjkdvvZCLmI/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Nombre y Apellido": "={{ $json[\"Nombre y apellido\"] }}",
+            "Mail": "={{ $json.Email }}",
+            "Pais": "={{ $json.Pais }}",
+            "Empresa": "={{ $json.Empresa }}",
+            "Estado": "No apto"
+          },
+          "matchingColumns": [
+            "Nombre y Apellido"
+          ],
+          "schema": [
+            {
+              "id": "Nombre y Apellido",
+              "displayName": "Nombre y Apellido",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Mail",
+              "displayName": "Mail",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Pais",
+              "displayName": "Pais",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Empresa",
+              "displayName": "Empresa",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Estado",
+              "displayName": "Estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        976,
+        112
+      ],
+      "id": "2faa6015-c73a-4c6b-8988-65a19d5802d1",
+      "name": "Leads no aptos",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "cO2GsHsURz1s3kp7",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Mail a equipo de ventas",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Leads no aptos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Captador de Leads": {
+      "main": [
+        [
+          {
+            "node": "Datos limpios",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Datos limpios": {
+      "main": [
+        [
+          {
+            "node": "Normalizacion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalizacion": {
+      "main": [
+        [
+          {
+            "node": "Registro Maestro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registro Maestro": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mail a equipo de ventas": {
+      "main": [
+        []
+      ]
+    },
+    "Leads no aptos": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "f62b3786-4cdc-4cd3-b461-ecc9084dfdfb",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "8ceaf63a19263d0080f7a289cd603d1deb1c5c11ad34ec3196683c66d54a242c"
+  },
+  "id": "erFDc1GqKkuCZK0G",
+  "tags": []
+}
