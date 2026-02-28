@@ -1,6 +1,4 @@
-# 🤖 n8n-lead-management-pro
-
-### 🚀 Gestión de Leads y Segmentación Automática
+# 🚀 Gestión de Leads y Segmentación Automática
 
 Este flujo de trabajo en n8n automatiza la recepción de leads desde formularios web, realiza una limpieza profunda de datos mediante JavaScript y segmenta a los interesados según criterios geográficos y de contacto para optimizar la respuesta comercial.
 
