@@ -54,7 +54,7 @@
         },
         "documentId": {
           "__rl": true,
-          "value": "1--R627XeA1eqYBG54XHRs3TNdf8aq1nK7pQQnY54UiQ",
+          "TU_ID_DE_HOJA",
           "mode": "list",
           "cachedResultName": "Captacion de Leads (respuestas)",
           "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1--R627XeA1eqYBG54XHRs3TNdf8aq1nK7pQQnY54UiQ/edit?usp=drivesdk"
@@ -79,7 +79,7 @@
       "name": "Captador de Leads",
       "credentials": {
         "googleSheetsTriggerOAuth2Api": {
-          "id": "gCpAxqg0JOQWU0CH",
+          "id": "TU_ID_DE_HOJA_AQUÍ",
           "name": "Google Sheets Trigger account"
         }
       }
@@ -143,7 +143,7 @@
         "operation": "append",
         "documentId": {
           "__rl": true,
-          "value": "1--R627XeA1eqYBG54XHRs3TNdf8aq1nK7pQQnY54UiQ",
+          "TU_ID_DE_HOJA",
           "mode": "list",
           "cachedResultName": "Captacion de Leads (respuestas)",
           "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1--R627XeA1eqYBG54XHRs3TNdf8aq1nK7pQQnY54UiQ/edit?usp=drivesdk"
@@ -227,14 +227,14 @@
       "name": "Registro Maestro",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "cO2GsHsURz1s3kp7",
+          "id": "TU_ID_DE_HOJA_AQUÍ",
           "name": "Google Sheets account"
         }
       }
     },
     {
       "parameters": {
-        "sendTo": "fabr045@gmail.com",
+        "sendTo": "vendedor@agencia.com",
         "subject": "Nuevo Lead Aprobado",
         "emailType": "text",
         "message": "=Hola! Les informamos que tenemos un nuevo lead; a continuación les detallamos sus datos:\n\nNombre:{{ $json[\"Nombre y apellido\"] }}\nMail:{{ $json.Email }}\nEmpresa:{{ $json.Empresa }}",
@@ -261,17 +261,17 @@
         "operation": "appendOrUpdate",
         "documentId": {
           "__rl": true,
-          "value": "1mhWoaX4jBfAM9ESq4gfMGjrs5By2Qsr8MjkdvvZCLmI",
+          "value": "TU_ID_DE_HOJA",
           "mode": "list",
           "cachedResultName": "Leads Descartados",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1mhWoaX4jBfAM9ESq4gfMGjrs5By2Qsr8MjkdvvZCLmI/edit?usp=drivesdk"
+          "cachedResultUrl": "TU_LINK_CACHE"
         },
         "sheetName": {
           "__rl": true,
           "value": "gid=0",
           "mode": "list",
           "cachedResultName": "Hoja 1",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1mhWoaX4jBfAM9ESq4gfMGjrs5By2Qsr8MjkdvvZCLmI/edit#gid=0"
+          "cachedResultUrl": "TU_LINK_CACHE"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -349,7 +349,7 @@
       "name": "Leads no aptos",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "cO2GsHsURz1s3kp7",
+          "id": "TU_ID_DE_HOJA_AQUÍ",
           "name": "Google Sheets account"
         }
       }
