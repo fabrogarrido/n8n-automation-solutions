@@ -1,4 +1,3 @@
-# n8n-automation-solutions
 # 📦 Control de Inventario Automatizado
 
 ## Descripción
